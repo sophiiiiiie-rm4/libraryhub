@@ -1,55 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Limelight&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap');
+
 header {
-  background: rgba(255,255,255,0.85);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(99,102,241,0.1);
+  background: #ffffff;
+  border-bottom: 1.5px solid #0D1117;
   padding: 0 3rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 70px;
+  height: 64px;
   position: sticky;
   top: 0;
   z-index: 100;
-  box-shadow: 0 4px 24px rgba(99,102,241,0.06);
+  /* matching hard shadow for consistency */
+  box-shadow: 0 2px 0 0 #0D1117;
 }
 
+/* ── Logo ─────────────────────────────────────────────────────────────── */
 .logo {
-  font-family: 'Syne', sans-serif;
-  font-size: 1.5rem;
-  font-weight: 800;
-  color: var(--ink);
-  letter-spacing: -0.5px;
+  font-family: 'Limelight', cursive;
+  font-size: 1.45rem;
+  font-weight: 400;
+  color: #0D1117;
+  letter-spacing: 0.01em;
   text-decoration: none;
+  user-select: none;
 }
 
 .logo span {
-  background: linear-gradient(135deg, #6366f1, #06b6d4);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: darkgrey;
 }
 
-nav { display: flex; gap: 0.4rem; align-items: center; }
+/* ── Nav links ────────────────────────────────────────────────────────── */
+nav {
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+}
 
 nav a {
+  font-family: 'Outfit', sans-serif;
   text-decoration: none;
-  color: var(--gray);
-  font-family: 'Inter', sans-serif;
-  font-size: 0.88rem;
+  color: #4A5068;
+  font-size: 0.875rem;
   font-weight: 500;
-  padding: 0.55rem 1.2rem;
-  border-radius: 12px;
-  transition: all 0.2s ease;
+  padding: 0.45rem 1.1rem;
+  border-radius: 8px;
+  border: 1.5px solid transparent;
+  transition: all 0.15s ease;
+  letter-spacing: 0.01em;
 }
 
 nav a:hover {
-  background: var(--primary-light);
-  color: var(--primary);
+  color: #0D1117;
+  background: #F0F2F8;
+  border-color: #E3E6F0;
 }
 
 nav a.active {
-  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  background: #0D1117;
+  color: #ffffff;
+  border-color: #0D1117;
+  box-shadow: 2px 2px 0px 0px rgba(13,17,23,0.35);
+}
+
+nav a.active:hover {
+  background: #1a2030;
+  border-color: #1a2030;
   color: #fff;
-  box-shadow: 0 4px 14px rgba(99,102,241,0.4);
 }

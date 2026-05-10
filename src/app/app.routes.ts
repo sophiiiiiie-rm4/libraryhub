@@ -11,6 +11,6 @@ export const routes: Routes = [
   { path: 'members/edit/:id', loadComponent: () => import('./components/member-form/member-form').then(m => m.MemberFormComponent) },
   { path: 'loans', loadComponent: () => import('./components/loan-list/loan-list').then(m => m.LoanListComponent) },
   { path: 'loans/new', loadComponent: () => import('./components/loan-form/loan-form').then(m => m.LoanFormComponent) },
-  { path: 'dashboard', loadComponent: () => import('./components/placeholder/placeholder').then(m => m.PlaceholderComponent) },
+  { path: 'dashboard', loadComponent: () => import('./components/dashboard/dashboard').then(m => m.DashboardComponent) },
   { path: '**', redirectTo: 'books' }
 ];

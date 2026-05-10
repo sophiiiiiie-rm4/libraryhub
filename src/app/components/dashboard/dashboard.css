@@ -1,0 +1,343 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
+
+/* ── Design tokens ────────────────────────────────────────────────────── */
+:root {
+  --db-bg:          #F0F2F8;
+  --db-surface:     #FFFFFF;
+  --db-surface-2:   #F7F8FC;
+  --db-border:      #E3E6F0;
+  --db-ink:         #0D1117;
+  --db-ink-2:       #4A5068;
+  --db-ink-3:       #8A91A8;
+
+  --db-blue:        #2563EB;
+  --db-blue-soft:   #EEF4FF;
+  --db-teal:        #0891B2;
+  --db-teal-soft:   #ECFEFF;
+  --db-amber:       #D97706;
+  --db-amber-soft:  #FFFBEB;
+  --db-red:         #DC2626;
+  --db-red-soft:    #FEF2F2;
+  --db-green:       #059669;
+  --db-green-soft:  #ECFDF5;
+
+  --db-radius-sm:   8px;
+  --db-radius:      14px;
+  --db-radius-lg:   20px;
+  --db-shadow-card: 4px 4px 0px 0px #0D1117;
+}
+
+/* ── Page wrapper ─────────────────────────────────────────────────────── */
+.dashboard {
+  font-family: 'Outfit', sans-serif;
+  background: var(--db-bg);
+  min-height: 100vh;
+  padding: 2.5rem 2rem 4rem;
+  max-width: 1160px;
+  margin: 0 auto;
+}
+
+/* ── Header ───────────────────────────────────────────────────────────── */
+.dash-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 2.5rem;
+}
+
+.dash-header h1 {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 1.85rem;
+  letter-spacing: -0.03em;
+  color: var(--db-ink);
+}
+
+.dash-header h1 span { color: var(--db-blue); }
+
+.date {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.8rem;
+  color: var(--db-ink-3);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* ── KPI Grid ─────────────────────────────────────────────────────────── */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.1rem;
+  margin-bottom: 2rem;
+}
+
+.kpi-card {
+  background: var(--db-surface);
+  border-radius: var(--db-radius);
+  padding: 1.4rem 1.6rem 1.3rem;
+  border: 1.5px solid #0D1117;
+  box-shadow: var(--db-shadow-card);
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  transition: box-shadow 0.15s, transform 0.15s;
+  position: relative;
+}
+
+.kpi-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px 0px #0D1117;
+}
+
+.kpi-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.kpi-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--db-ink-3);
+}
+
+.kpi-icon-wrap {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--db-radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Black icon bg for most cards */
+.kpi-books   .kpi-icon-wrap,
+.kpi-loans   .kpi-icon-wrap,
+.kpi-members .kpi-icon-wrap { background: #0D1117; }
+
+/* Colored for alert cards */
+.kpi-overdue .kpi-icon-wrap             { background: var(--db-amber-soft); border: 1px solid #FDE68A; }
+.kpi-overdue.has-overdue .kpi-icon-wrap { background: var(--db-red-soft);   border: 1px solid #FECACA; }
+
+.kpi-icon-wrap svg { width: 17px; height: 17px; }
+
+.kpi-books   .kpi-icon-wrap svg,
+.kpi-loans   .kpi-icon-wrap svg,
+.kpi-members .kpi-icon-wrap svg             { color: #fff; }
+.kpi-overdue .kpi-icon-wrap svg             { color: var(--db-amber); }
+.kpi-overdue.has-overdue .kpi-icon-wrap svg { color: var(--db-red); }
+
+.kpi-value {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 2.6rem;
+  letter-spacing: -0.05em;
+  color: var(--db-ink);
+  line-height: 1;
+}
+
+.kpi-footer {
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--db-border);
+  font-size: 0.74rem;
+  color: var(--db-ink-3);
+  font-weight: 500;
+}
+
+/* ── Section shared ───────────────────────────────────────────────────── */
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.section-title {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--db-ink);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.section-title::before {
+  content: '';
+  display: inline-block;
+  width: 3px;
+  height: 16px;
+  border-radius: 2px;
+}
+
+.alert-section .section-title::before { background: var(--db-red); }
+.loans-section .section-title::before { background: var(--db-blue); }
+
+.see-all {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--db-blue);
+  text-decoration: none;
+  transition: opacity 0.15s;
+}
+.see-all:hover { opacity: 0.7; }
+
+/* ── Alert section ────────────────────────────────────────────────────── */
+.alert-section { margin-bottom: 1.5rem; }
+
+.alert-list { display: flex; flex-direction: column; gap: 0.6rem; }
+
+.alert-card {
+  background: var(--db-surface);
+  border: 1.5px solid #FECACA;
+  border-radius: var(--db-radius);
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  transition: box-shadow 0.2s;
+}
+
+.alert-card:hover { box-shadow: 3px 3px 0 0 #FECACA; background-color: lightgrey}
+
+.alert-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--db-red);
+  flex-shrink: 0;
+}
+
+.alert-info { flex: 1; display: flex; flex-direction: column; gap: 0.15rem; }
+.alert-info strong { font-weight: 600; font-size: 0.95rem; color: var(--db-ink); }
+.alert-info span   { font-size: 0.82rem; color: var(--db-ink-3); }
+
+.alert-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 0.3rem; }
+
+/* ── FIXED: overdue badge — solid red bg, always white text ── */
+.overdue-badge {
+  display: inline-block;
+  background: var(--db-red);
+  font-weight: bold;
+  color: #00000 !important;
+  font-size: 0.7rem;
+  font-weight: 700;
+  font-family: 'DM Mono', monospace;
+  padding: 0.22rem 0.65rem;
+  border-radius: 20px;
+  letter-spacing: 0.03em;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.due-date {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.73rem;
+  color: var(--db-ink-3);
+}
+
+.action-link {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--db-ink);
+  text-decoration: none;
+  padding: 0.32rem 0.85rem;
+  border: 1.5px solid var(--db-ink);
+  border-radius: var(--db-radius-sm);
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+
+.action-link:hover { background: var(--db-ink); color: #fff; }
+
+/* ── Loans table ──────────────────────────────────────────────────────── */
+.loans-section {
+  background: var(--db-surface);
+  border-radius: var(--db-radius-lg);
+  padding: 1.5rem 1.75rem;
+  border: 1.5px solid #0D1117;
+  box-shadow: var(--db-shadow-card);
+}
+
+.loans-table { width: 100%; }
+
+.table-head,
+.table-row {
+  display: grid;
+  grid-template-columns: 2fr 1.5fr 1fr 1fr 0.8fr;
+  gap: 1rem;
+  padding: 0.7rem 0.5rem;
+  align-items: center;
+}
+
+.table-head {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--db-ink-3);
+  border-bottom: 1px solid var(--db-border);
+  padding-bottom: 0.85rem;
+}
+
+.table-row {
+  font-size: 0.9rem;
+  color: var(--db-ink-2);
+  border-bottom: 1px solid var(--db-surface-2);
+  transition: background 0.15s;
+  border-radius: var(--db-radius-sm);
+}
+
+.table-row:last-child { border-bottom: none; }
+.table-row:hover { background: var(--db-surface-2); }
+
+.book-title { font-weight: 600; color: var(--db-ink); font-size: 0.9rem; }
+
+/* ── Status badges ────────────────────────────────────────────────────── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.22rem 0.65rem;
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: capitalize;
+}
+
+.badge::before {
+  content: '';
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.badge-active  { background: var(--db-green-soft); color: var(--db-green); }
+.badge-active::before  { background: var(--db-green); }
+.badge-overdue { background: var(--db-red-soft);   color: var(--db-red); }
+.badge-overdue::before { background: var(--db-red); }
+
+.empty-state {
+  text-align: center;
+  padding: 3rem 0;
+  color: var(--db-ink-3);
+  font-size: 0.9rem;
+}
+
+/* ── Responsive ───────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 600px) {
+  .kpi-grid { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+  .table-head,
+  .table-row { grid-template-columns: 2fr 1fr 1fr; }
+  .table-head span:nth-child(3),
+  .table-row  span:nth-child(3),
+  .table-head span:nth-child(4),
+  .table-row  span:nth-child(4) { display: none; }
+}

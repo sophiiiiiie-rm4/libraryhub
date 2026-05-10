@@ -1,0 +1,118 @@
+<div class="dashboard">
+
+  <!-- Header -->
+  <header class="dash-header">
+    <h1>Tableau de <span>Bord</span></h1>
+    <span class="date">{{ today | date:'EEEE, d MMMM yyyy' }}</span>
+  </header>
+
+  <!-- KPI Cards -->
+  <section class="kpi-grid">
+
+    <div class="kpi-card kpi-books">
+      <div class="kpi-top">
+        <span class="kpi-label">Total Books</span>
+        <div class="kpi-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+          </svg>
+        </div>
+      </div>
+      <span class="kpi-value">{{ totalBooks }}</span>
+    </div>
+
+    <div class="kpi-card kpi-loans">
+      <div class="kpi-top">
+        <span class="kpi-label">Active Loans</span>
+        <div class="kpi-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+          </svg>
+        </div>
+      </div>
+      <span class="kpi-value">{{ activeLoans }}</span>
+    </div>
+
+    <div class="kpi-card kpi-overdue" [class.has-overdue]="overdueLoans > 0">
+      <div class="kpi-top">
+        <span class="kpi-label">Overdue</span>
+        <div class="kpi-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+        </div>
+      </div>
+      <span class="kpi-value">{{ overdueLoans }}</span>
+    </div>
+
+    <div class="kpi-card kpi-members">
+      <div class="kpi-top">
+        <span class="kpi-label">Members</span>
+        <div class="kpi-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+        </div>
+      </div>
+      <span class="kpi-value">{{ totalMembers }}</span>
+    </div>
+
+  </section>
+
+  <!-- Overdue Alerts -->
+  @if (overdueLoansDetails.length > 0) {
+    <section class="alert-section">
+      <div class="section-header">
+        <h2 class="section-title">Overdue Alerts</h2>
+      </div>
+      <div class="alert-list">
+        @for (item of overdueLoansDetails; track item.loan.id) {
+          <div class="alert-card">
+            <div class="alert-dot"></div>
+            <div class="alert-info">
+              <strong>{{ item.book?.title }}</strong>
+              <span>{{ item.member?.firstName }} {{ item.member?.lastName }}</span>
+            </div>
+            <div class="alert-meta">
+              <span class="overdue-badge">{{ daysOverdue(item.loan.dueDate) }}d overdue</span>
+              <span class="due-date">Due {{ item.loan.dueDate | date:'MMM d, yyyy' }}</span>
+            </div>
+            <a [routerLink]="['/loans']" class="action-link">View</a>
+          </div>
+        }
+      </div>
+    </section>
+  }
+
+  <!-- Active Loans Table -->
+  <section class="loans-section">
+    <div class="section-header">
+      <h2 class="section-title">Active Loans</h2>
+      <a routerLink="/loans" class="see-all">View all loans →</a>
+    </div>
+
+    @if (activeLoansDetails.length === 0) {
+      <p class="empty-state">No active loans at this time.</p>
+    } @else {
+      <div class="loans-table">
+        <div class="table-head">
+          <span>Book</span>
+          <span>Member</span>
+          <span>Borrowed</span>
+          <span>Due Date</span>
+          <span>Status</span>
+        </div>
+        @for (item of activeLoansDetails; track item.loan.id) {
+          <div class="table-row">
+            <span class="book-title">{{ item.book?.title }}</span>
+            <span>{{ item.member?.firstName }} {{ item.member?.lastName }}</span>
+            <span>{{ item.loan.borrowedAt | date:'MMM d, yyyy' }}</span>
+            <span>{{ item.loan.dueDate | date:'MMM d, yyyy' }}</span>
+            <span class="badge" [class]="'badge-' + item.loan.status">{{ item.loan.status }}</span>
+          </div>
+        }
+      </div>
+    }
+  </section>
+
+</div>
