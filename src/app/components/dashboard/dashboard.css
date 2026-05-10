@@ -72,7 +72,7 @@
 }
 
 .kpi-card {
-  background: var(--db-surface);
+  background: #ffffff;
   border-radius: var(--db-radius);
   padding: 1.4rem 1.6rem 1.3rem;
   border: 1.5px solid #0D1117;

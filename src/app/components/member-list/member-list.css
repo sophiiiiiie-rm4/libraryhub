@@ -4,7 +4,6 @@
 .page-header {
   background: #0D1117;
   padding: 3rem 2rem;
-  border-bottom: 1.5px solid #0D1117;
   position: relative;
   overflow: hidden;
 }
@@ -23,7 +22,7 @@
   position: absolute;
   width: 500px;
   height: 500px;
-  background: radial-gradient(circle, rgba(37,99,235,0.15) 0%, transparent 65%);
+  background: radial-gradient(circle, rgba(37,99,235,0.12) 0%, transparent 65%);
   bottom: -220px;
   right: 0;
   border-radius: 50%;
@@ -76,20 +75,17 @@
 .search-input {
   width: 100%;
   padding: 0.65rem 1rem;
-  border: 1.5px solid #E3E6F0;
-  border-radius: 10px;
+  border: 1px solid #D1D5DB;
+  border-radius: 0;
   font-family: 'Outfit', sans-serif;
   font-size: 0.9rem;
   color: #0D1117;
   background: #fff;
   outline: none;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  transition: border-color 0.15s;
 }
 
-.search-input:focus {
-  border-color: #0D1117;
-  box-shadow: 0 0 0 3px rgba(13,17,23,0.06);
-}
+.search-input:focus { border-color: #0D1117; }
 
 .toolbar-right {
   display: flex;
@@ -119,23 +115,27 @@
   background: #0D1117;
   color: #fff;
   text-decoration: none;
-  padding: 0.55rem 1.2rem;
-  border-radius: 8px;
+  padding: 0.6rem 1.25rem;
+  border-radius: 0;
   font-size: 0.85rem;
   font-weight: 600;
   font-family: 'Outfit', sans-serif;
   border: 1.5px solid #0D1117;
-  box-shadow: 2px 2px 0 0 rgba(13,17,23,0.3);
-  transition: all 0.15s;
   white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  transition: opacity 0.15s;
 }
+.btn-primary:hover { opacity: 0.85; }
 
-.btn-primary:hover {
-  transform: translate(-1px, -1px);
-  box-shadow: 3px 3px 0 0 rgba(13,17,23,0.3);
-}
-
-/* ── Stats row ────────────────────────────────────────────────────────── */
+/* ── KPI Stats row — pixel-perfect dashboard card match ───────────────── */
+/*
+  Dashboard card traits from screenshot:
+  - border-radius: 0  (perfectly square corners)
+  - border: 1px solid #0D1117
+  - box-shadow: 4px 4px 0 0 #0D1117  (hard flat offset, no blur)
+  - icon box: filled black square, no radius
+*/
 .stats-row {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -145,44 +145,65 @@
 
 .stat-card {
   background: #fff;
-  border: 1.5px solid #0D1117;
-  border-radius: 14px;
-  padding: 1.25rem 1.5rem;
+  border: 1px solid #0D1117;
+  border-radius: 0;
+  padding: 1.25rem 1.5rem 1.4rem;
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
-  box-shadow: 3px 3px 0 0 #0D1117;
-  transition: transform 0.15s, box-shadow 0.15s;
+  gap: 0.75rem;
+  transition: transform 0.12s, box-shadow 0.12s;
 }
 
 .stat-card:hover {
-  transform: translate(-1px, -1px);
-  box-shadow: 4px 4px 0 0 #0D1117;
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 0 #0D1117;
 }
+
+.stat-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.stat-lbl {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #0D1117;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  font-family: 'Outfit', sans-serif;
+}
+
+/* Black filled square icon box — same as dashboard */
+.stat-icon-wrap {
+  width: 30px;
+  height: 30px;
+  background: #0D1117;
+  border: 1px solid #0D1117;
+  border-radius: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.stat-icon-wrap svg { width: 15px; height: 15px; }
 
 .stat-val {
   font-family: 'Outfit', sans-serif;
-  font-size: 2.2rem;
+  font-size: 2.4rem;
   font-weight: 700;
   color: #0D1117;
   letter-spacing: -0.05em;
   line-height: 1;
 }
 
-.stat-lbl {
-  font-size: 0.68rem;
-  font-weight: 800;
-  color: #8A91A8;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-/* ── Table ────────────────────────────────────────────────────────────── */
+/* ── Table wrap — same square + hard shadow treatment ─────────────────── */
 .table-wrap {
-  background: #fff;
-  border-radius: 16px;
-  border: 1.5px solid #0D1117;
-  box-shadow: 4px 4px 0 0 #0D1117;
+  background: var(--db-surface);
+  border: 1px solid #0D1117;
+  border-radius: 0;
   overflow: hidden;
 }
 
@@ -193,8 +214,7 @@
 }
 
 .members-table thead tr {
-  background: #F7F8FC;
-  border-bottom: 1.5px solid #E3E6F0;
+  border-bottom: 1px solid #E5E7EB;
 }
 
 .members-table th {
@@ -204,19 +224,19 @@
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #8A91A8;
+  color: #6B7280;
 }
 
 .members-table td {
-  padding: 0.95rem 1.25rem;
-  border-bottom: 1px solid #F0F2F8;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid #F3F4F6;
   font-size: 0.88rem;
   color: #0D1117;
   vertical-align: middle;
 }
 
 .members-table tbody tr:last-child td { border-bottom: none; }
-.members-table tbody tr:hover { background: #F7F8FC; }
+.members-table tbody tr:hover { background: #FAFAFA; }
 
 .member-name {
   font-weight: 700;
@@ -224,13 +244,12 @@
   letter-spacing: -0.01em;
 }
 
-/* Card badge — monospace dark pill */
 .card-badge {
   background: #F0F2F8;
   color: #0D1117;
-  border: 1.5px solid #E3E6F0;
+  border: 1px solid #E3E6F0;
   padding: 0.2rem 0.65rem;
-  border-radius: 6px;
+  border-radius: 3px;
   font-size: 0.75rem;
   font-weight: 600;
   font-family: 'DM Mono', monospace;
@@ -250,7 +269,7 @@
 }
 
 .date-cell {
-  color: #8A91A8;
+  color: #6B7280;
   font-size: 0.82rem;
   font-family: 'DM Mono', monospace;
 }
@@ -259,12 +278,12 @@
 .status-badge {
   display: inline-flex;
   align-items: center;
-  gap: 0.3rem;
-  padding: 0.22rem 0.65rem;
+  gap: 0.35rem;
+  padding: 0.25rem 0.7rem;
   border-radius: 20px;
   font-size: 0.72rem;
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.03em;
 }
 
 .status-badge::before {
@@ -275,63 +294,41 @@
   flex-shrink: 0;
 }
 
-.status-badge.active {
-  background: #ECFDF5;
-  color: #059669;
-  border: 1px solid #A7F3D0;
-}
-.status-badge.active::before { background: #059669; }
-
-.status-badge.inactive {
-  background: #F7F8FC;
-  color: #8A91A8;
-  border: 1px solid #E3E6F0;
-}
+.status-badge.active  { background: #ECFDF5; color: #059669; border: 1px solid #A7F3D0; }
+.status-badge.active::before  { background: #059669; }
+.status-badge.inactive { background: #F7F8FC; color: #8A91A8; border: 1px solid #E3E6F0; }
 .status-badge.inactive::before { background: #8A91A8; }
 
 /* Action buttons */
-.action-btns {
-  display: flex;
-  gap: 0.45rem;
-}
+.action-btns { display: flex; gap: 0.45rem; }
 
 .btn-edit-sm {
   background: #fff;
   color: #0D1117;
-  border: 1.5px solid #E3E6F0;
+  border: 1px solid #D1D5DB;
   text-decoration: none;
-  padding: 0.28rem 0.8rem;
-  border-radius: 6px;
+  padding: 0.3rem 0.85rem;
+  border-radius: 4px;
   font-size: 0.75rem;
   font-weight: 600;
   font-family: 'Outfit', sans-serif;
-  transition: all 0.15s;
+  transition: border-color 0.12s, background 0.12s;
 }
-
-.btn-edit-sm:hover {
-  border-color: #0D1117;
-  background: #F0F2F8;
-  color: #0D1117;
-}
+.btn-edit-sm:hover { border-color: #0D1117; background: #F9FAFB; }
 
 .btn-delete-sm {
   background: #FEF2F2;
   color: #DC2626;
-  border: 1.5px solid #FECACA;
-  padding: 0.28rem 0.8rem;
-  border-radius: 6px;
+  border: 1px solid #FECACA;
+  padding: 0.3rem 0.85rem;
+  border-radius: 4px;
   font-size: 0.75rem;
   font-weight: 600;
   font-family: 'Outfit', sans-serif;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
 }
-
-.btn-delete-sm:hover {
-  background: #DC2626;
-  color: #fff;
-  border-color: #DC2626;
-}
+.btn-delete-sm:hover { background: #DC2626; color: #fff; border-color: #DC2626; }
 
 .empty-row {
   text-align: center;
