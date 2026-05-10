@@ -1,15 +1,11 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-nav',
   standalone: true,
-  imports: [CommonModule],
+  imports: [RouterLink, RouterLinkActive],
   templateUrl: './nav.html',
   styleUrls: ['./nav.css']
 })
-export class NavComponent {
-  @Input() view: string = 'home';
-  @Input() favCount: number = 0;
-  @Output() viewChange = new EventEmitter<string>();
-}
+export class NavComponent {}

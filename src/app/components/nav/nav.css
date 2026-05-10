@@ -20,6 +20,7 @@ header {
   font-weight: 800;
   color: var(--ink);
   letter-spacing: -0.5px;
+  text-decoration: none;
 }
 
 .logo span {
@@ -31,10 +32,8 @@ header {
 
 nav { display: flex; gap: 0.4rem; align-items: center; }
 
-nav button {
-  background: none;
-  border: none;
-  cursor: pointer;
+nav a {
+  text-decoration: none;
   color: var(--gray);
   font-family: 'Inter', sans-serif;
   font-size: 0.88rem;
@@ -42,27 +41,15 @@ nav button {
   padding: 0.55rem 1.2rem;
   border-radius: 12px;
   transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
 }
 
-nav button:hover {
+nav a:hover {
   background: var(--primary-light);
   color: var(--primary);
 }
 
-nav button.active {
+nav a.active {
   background: linear-gradient(135deg, #6366f1, #4f46e5);
   color: #fff;
   box-shadow: 0 4px 14px rgba(99,102,241,0.4);
-}
-
-.badge {
-  background: #fff;
-  color: var(--primary);
-  font-size: 0.7rem;
-  font-weight: 700;
-  padding: 0.1rem 0.5rem;
-  border-radius: 20px;
 }

@@ -1,0 +1,147 @@
+<div class="form-page">
+  <div class="form-header">
+    <div class="form-header-inner">
+      <button class="back-btn" (click)="cancel()">← Retour</button>
+      <h1 class="form-title">
+        {{ isEditMode ? 'Modifier le livre' : 'Ajouter un livre' }}
+      </h1>
+      <p class="form-subtitle">
+        {{ isEditMode ? 'Mettez a jour les informations du livre.' : 'Remplissez les informations pour ajouter un nouveau livre au catalogue.' }}
+      </p>
+    </div>
+  </div>
+
+  <div class="form-container">
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+
+      <div class="form-section">
+        <h2 class="section-label">Informations generales</h2>
+        <div class="form-grid">
+
+          <div class="field full">
+            <label for="title">Titre <span class="required">*</span></label>
+            <input id="title" type="text" formControlName="title" placeholder="Titre du livre"
+                   [class.error]="isInvalid('title')" />
+            <span class="error-msg" *ngIf="isInvalid('title')">
+              Le titre est obligatoire (minimum 2 caracteres).
+            </span>
+          </div>
+
+          <div class="field">
+            <label for="author">Auteur <span class="required">*</span></label>
+            <input id="author" type="text" formControlName="author" placeholder="Nom de l'auteur"
+                   [class.error]="isInvalid('author')" />
+            <span class="error-msg" *ngIf="isInvalid('author')">
+              L'auteur est obligatoire.
+            </span>
+          </div>
+
+          <div class="field">
+            <label for="isbn">ISBN <span class="required">*</span></label>
+            <input id="isbn" type="text" formControlName="isbn" placeholder="978-X-XXXX-XXXX-X"
+                   [class.error]="isInvalid('isbn')" />
+            <span class="error-msg" *ngIf="isInvalid('isbn')">
+              ISBN invalide (10 ou 13 chiffres).
+            </span>
+          </div>
+
+          <div class="field">
+            <label for="category">Categorie <span class="required">*</span></label>
+            <select id="category" formControlName="category" [class.error]="isInvalid('category')">
+              <option value="">-- Choisir --</option>
+              <option *ngFor="let c of categories" [value]="c">{{ c }}</option>
+            </select>
+            <span class="error-msg" *ngIf="isInvalid('category')">
+              La categorie est obligatoire.
+            </span>
+          </div>
+
+          <div class="field">
+            <label for="country">Pays d'origine <span class="required">*</span></label>
+            <input id="country" type="text" formControlName="country" placeholder="Ex: France"
+                   [class.error]="isInvalid('country')" />
+            <span class="error-msg" *ngIf="isInvalid('country')">
+              Le pays est obligatoire.
+            </span>
+          </div>
+
+          <div class="field">
+            <label for="year">Annee de publication <span class="required">*</span></label>
+            <input id="year" type="number" formControlName="year"
+                   [class.error]="isInvalid('year')" />
+            <span class="error-msg" *ngIf="isInvalid('year')">
+              Annee invalide.
+            </span>
+          </div>
+
+          <div class="field">
+            <label for="pages">Nombre de pages <span class="required">*</span></label>
+            <input id="pages" type="number" formControlName="pages" min="1"
+                   [class.error]="isInvalid('pages')" />
+            <span class="error-msg" *ngIf="isInvalid('pages')">
+              Minimum 1 page.
+            </span>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h2 class="section-label">Stock</h2>
+        <div class="form-grid">
+
+          <div class="field">
+            <label for="quantity">Quantite totale <span class="required">*</span></label>
+            <input id="quantity" type="number" formControlName="quantity" min="1"
+                   [class.error]="isInvalid('quantity')" />
+            <span class="error-msg" *ngIf="isInvalid('quantity')">
+              Minimum 1 exemplaire.
+            </span>
+          </div>
+
+          <div class="field">
+            <label for="availableCopies">Exemplaires disponibles <span class="required">*</span></label>
+            <input id="availableCopies" type="number" formControlName="availableCopies" min="0"
+                   [class.error]="isInvalid('availableCopies')" />
+            <span class="error-msg" *ngIf="isInvalid('availableCopies')">
+              Ne peut pas etre negatif.
+            </span>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h2 class="section-label">Description et couverture</h2>
+        <div class="form-grid">
+
+          <div class="field full">
+            <label for="coverUrl">URL de la couverture</label>
+            <input id="coverUrl" type="url" formControlName="coverUrl"
+                   placeholder="https://exemple.com/couverture.jpg" />
+            <span class="hint">Laissez vide pour utiliser l'affichage par defaut.</span>
+          </div>
+
+          <div class="field full">
+            <label for="description">Description <span class="required">*</span></label>
+            <textarea id="description" formControlName="description" rows="4"
+                      placeholder="Resumez le contenu du livre..."
+                      [class.error]="isInvalid('description')"></textarea>
+            <span class="error-msg" *ngIf="isInvalid('description')">
+              La description est obligatoire (minimum 10 caracteres).
+            </span>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-secondary" (click)="cancel()">Annuler</button>
+        <button type="submit" class="btn-primary">
+          {{ isEditMode ? 'Enregistrer les modifications' : 'Ajouter le livre' }}
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>

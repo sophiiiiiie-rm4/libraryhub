@@ -1,0 +1,90 @@
+<div class="page-header">
+  <div class="page-header-inner">
+    <h1 class="page-title">Gestion des membres</h1>
+    <p class="page-subtitle">Consultez, ajoutez et gerez les membres inscrits a la bibliotheque.</p>
+  </div>
+</div>
+
+<div class="page-container">
+
+  <div class="toolbar">
+    <div class="search-wrap">
+      <input
+        type="text"
+        [(ngModel)]="query"
+        placeholder="Rechercher par nom, email ou carte..."
+        class="search-input" />
+    </div>
+    <div class="toolbar-right">
+      <label class="toggle-label">
+        <input type="checkbox" [(ngModel)]="showInactiveOnly" />
+        Inactifs uniquement
+      </label>
+      <a routerLink="/members/new" class="btn-primary">+ Nouveau membre</a>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <span class="stat-val">{{ memberService.getMembers().length }}</span>
+      <span class="stat-lbl">Total membres</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-val">{{ memberService.getActiveMembers().length }}</span>
+      <span class="stat-lbl">Membres actifs</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-val">{{ memberService.getMembers().length - memberService.getActiveMembers().length }}</span>
+      <span class="stat-lbl">Membres inactifs</span>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table class="members-table">
+      <thead>
+      <tr>
+        <th>Membre</th>
+        <th>Carte</th>
+        <th>Contact</th>
+        <th>Inscription</th>
+        <th>Statut</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngIf="members.length === 0">
+        <td colspan="6" class="empty-row">Aucun membre trouve.</td>
+      </tr>
+      <tr *ngFor="let m of members">
+        <td>
+          <div class="member-name">{{ m.firstName }} {{ m.lastName }}</div>
+        </td>
+        <td>
+          <span class="card-badge">{{ m.memberCard }}</span>
+        </td>
+        <td>
+          <div class="contact-cell">
+            <span>{{ m.email }}</span>
+            <span class="phone">{{ m.phone }}</span>
+          </div>
+        </td>
+        <td class="date-cell">{{ m.joinedAt | date:'dd/MM/yyyy' }}</td>
+        <td>
+            <span class="status-badge" [class.active]="m.active" [class.inactive]="!m.active">
+              {{ m.active ? 'Actif' : 'Inactif' }}
+            </span>
+        </td>
+        <td>
+          <div class="action-btns">
+            <a [routerLink]="['/members/edit', m.id]" class="btn-edit-sm">Modifier</a>
+            <button class="btn-delete-sm" (click)="delete(m.id, m.firstName + ' ' + m.lastName)">
+              Supprimer
+            </button>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>

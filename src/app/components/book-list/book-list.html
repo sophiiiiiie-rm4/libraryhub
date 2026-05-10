@@ -1,14 +1,14 @@
 <div class="hero">
-  <h2>Votre bibliothèque numérique</h2>
-  <p>Découvrez, explorez et sauvegardez vos livres préférés</p>
+  <h2>Votre bibliotheque numerique</h2>
+  <p>Decouvrez, explorez et gerez vos livres</p>
   <div class="search-bar">
-    <input type="text" [(ngModel)]="query" placeholder="Rechercher un titre ou auteur…" />
+    <input type="text" [(ngModel)]="query" placeholder="Rechercher un titre ou auteur..." />
   </div>
 </div>
 
 <div class="categories">
   <button *ngFor="let c of categories" class="cat-btn"
-    [class.active]="category === c" (click)="category = c">
+          [class.active]="category === c" (click)="category = c">
     {{ c }}
   </button>
 </div>
@@ -16,21 +16,27 @@
 <main>
   <div class="section-header">
     <h2 class="section-title">{{ category === 'Toutes' ? 'Tous les livres' : category }}</h2>
-    <span class="count-badge">{{ filtered.length }} livres</span>
+    <div style="display:flex; gap:0.75rem; align-items:center;">
+      <span class="count-badge">{{ filtered.length }} livres</span>
+      <a routerLink="/books/new" class="add-btn">+ Ajouter un livre</a>
+    </div>
   </div>
 
   <div *ngIf="filtered.length === 0" class="empty">
-    <h3>Aucun résultat</h3>
-    <p>Essayez un autre titre, auteur ou catégorie.</p>
+    <h3>Aucun resultat</h3>
+    <p>Essayez un autre titre, auteur ou categorie.</p>
   </div>
 
   <div class="books-grid">
-    <app-book-card
-      *ngFor="let b of filtered"
-      [book]="b"
-      [isFav]="favorites.has(b.id)"
-      (selected)="bookSelected.emit($event)"
-      (toggleFav)="favToggled.emit($event)">
-    </app-book-card>
+    <a *ngFor="let b of filtered"
+       [routerLink]="['/books', b.id]"
+       class="book-link">
+      <app-book-card
+        [book]="b"
+        [isFav]="isFav(b.id)"
+        (selected)="$event"
+        (toggleFav)="toggleFav($event)">
+      </app-book-card>
+    </a>
   </div>
 </main>

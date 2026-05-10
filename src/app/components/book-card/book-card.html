@@ -1,11 +1,14 @@
-<div class="book-card" (click)="selected.emit(book)">
-  <div class="book-cover">{{ book.emoji }}</div>
+<div class="book-card">
+  <div class="book-cover">
+    <img *ngIf="book.coverUrl" [src]="book.coverUrl" [alt]="book.title" />
+    <span *ngIf="!book.coverUrl" class="cover-letter">{{ book.title.charAt(0) }}</span>
+  </div>
   <div class="book-info">
     <div class="book-title">{{ book.title }}</div>
     <div class="book-author">{{ book.author }}</div>
     <span class="cat-tag">{{ book.category }}</span>
     <div class="book-meta">
-      <span class="stars">★ {{ book.rating }}</span>
+      <span class="stars">&#9733; {{ book.rating > 0 ? book.rating : 'N/A' }}</span>
       <button class="fav-btn" (click)="$event.stopPropagation(); toggleFav.emit(book.id)">
         {{ isFav ? '❤️' : '🤍' }}
       </button>

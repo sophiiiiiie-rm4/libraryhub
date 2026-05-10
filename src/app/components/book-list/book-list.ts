@@ -1,25 +1,26 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Book } from '../../services/book';
+import { RouterLink } from '@angular/router';
+import { BookService, Book } from '../../services/book';
+import { FavoriteService } from '../../services/favorite';
 import { BookCardComponent } from '../book-card/book-card';
 
 @Component({
   selector: 'app-book-list',
   standalone: true,
-  imports: [CommonModule, FormsModule, BookCardComponent],
+  imports: [CommonModule, FormsModule, RouterLink, BookCardComponent],
   templateUrl: './book-list.html',
   styleUrls: ['./book-list.css']
 })
 export class BookListComponent {
-  @Input() books: Book[] = [];
-  @Input() categories: string[] = [];
-  @Input() favorites = new Set<number>();
-  @Output() bookSelected = new EventEmitter<Book>();
-  @Output() favToggled = new EventEmitter<number>();
-
   query = '';
   category = 'Toutes';
+
+  constructor(public bookService: BookService, public favService: FavoriteService) {}
+
+  get books() { return this.bookService.getBooks(); }
+  get categories() { return this.bookService.getCategories(); }
 
   get filtered(): Book[] {
     return this.books.filter(b => {
@@ -28,4 +29,7 @@ export class BookListComponent {
         && (this.category === 'Toutes' || b.category === this.category);
     });
   }
+
+  toggleFav(id: number) { this.favService.toggle(id); }
+  isFav(id: number) { return this.favService.isFav(id); }
 }

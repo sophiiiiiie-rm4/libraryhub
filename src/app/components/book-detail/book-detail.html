@@ -1,61 +1,100 @@
-<div class="modal-overlay" (click)="closed.emit()">
-  <div class="modal" (click)="$event.stopPropagation()">
-    <button class="modal-close" (click)="closed.emit()">✕</button>
-    <div class="modal-cover">{{ book.emoji }}</div>
-    <div class="modal-body">
+<div class="detail-page" *ngIf="book">
 
-      <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-        <div>
-          <h2 class="modal-title">{{ book.title }}</h2>
-          <p class="modal-author">par {{ book.author }} · {{ book.country }} · {{ book.year }}</p>
+  <div class="detail-header">
+    <div class="detail-header-inner">
+      <a routerLink="/books" class="back-btn">← Retour au catalogue</a>
+      <div class="header-actions">
+        <a [routerLink]="['/books/edit', book.id]" class="btn-edit">Modifier</a>
+        <button class="btn-delete" (click)="delete()">Supprimer</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="detail-container">
+
+    <div class="detail-top">
+      <div class="cover-panel">
+        <div class="cover-box" *ngIf="!book.coverUrl">
+          <span class="cover-placeholder">{{ book.title.charAt(0) }}</span>
         </div>
-        <button class="fav-btn" style="font-size:1.6rem" (click)="toggleFav.emit(book.id)">
-          {{ isFav ? '❤️' : '🤍' }}
+        <img *ngIf="book.coverUrl" [src]="book.coverUrl" [alt]="book.title" class="cover-img" />
+
+        <div class="availability-badge"
+             [class.available]="book.availableCopies > 0"
+             [class.unavailable]="book.availableCopies === 0">
+          {{ book.availableCopies | availability:book.quantity }}
+        </div>
+
+        <button class="fav-btn" (click)="toggleFav()">
+          {{ isFav ? 'Retirer des favoris' : 'Ajouter aux favoris' }}
         </button>
       </div>
 
-      <span class="cat-tag">{{ book.category }}</span>
-      <p class="modal-desc">{{ book.description }}</p>
+      <div class="info-panel">
+        <span class="cat-tag">{{ book.category }}</span>
+        <h1 class="book-title">{{ book.title }}</h1>
+        <p class="book-author">{{ book.author }} &mdash; {{ book.country }}, {{ book.year }}</p>
 
-      <div class="modal-stats">
-        <div class="stat-box">
-          <div class="stat-val">{{ book.pages }}</div>
-          <div class="stat-lbl">Pages</div>
+        <p class="book-desc">{{ book.description }}</p>
+
+        <div class="meta-grid">
+          <div class="meta-item">
+            <span class="meta-val">{{ book.pages }}</span>
+            <span class="meta-lbl">Pages</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-val">{{ book.rating > 0 ? book.rating : 'N/A' }}</span>
+            <span class="meta-lbl">Note moyenne</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-val">{{ book.quantity }}</span>
+            <span class="meta-lbl">Exemplaires</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-val">{{ book.reviews.length }}</span>
+            <span class="meta-lbl">Avis</span>
+          </div>
         </div>
-        <div class="stat-box">
-          <div class="stat-val" style="color:#2563eb">★ {{ book.rating }}</div>
-          <div class="stat-lbl">Note</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-val">{{ book.reviews.length }}</div>
-          <div class="stat-lbl">Avis</div>
+
+        <div class="isbn-row">
+          <span class="isbn-label">ISBN</span>
+          <span class="isbn-value">{{ book.isbn | isbn }}</span>
         </div>
       </div>
+    </div>
 
-      <h3 class="reviews-title">💬 Commentaires</h3>
-      <p *ngIf="book.reviews.length === 0" style="color:#64748b; font-size:.9rem">
-        Soyez le premier à laisser un avis !
+    <div class="reviews-section">
+      <h2 class="section-title">Commentaires ({{ book.reviews.length }})</h2>
+
+      <p *ngIf="book.reviews.length === 0" class="no-reviews">
+        Aucun avis pour le moment. Soyez le premier a en laisser un.
       </p>
-      <div class="review-item" *ngFor="let r of book.reviews">
-        <div class="review-header">
-          <span class="review-user">{{ r.user }}</span>
-          <span class="stars">{{ starsArray(r.stars).join('') }}{{ emptyStars(r.stars).join('') }}</span>
+
+      <div class="review-list">
+        <div class="review-item" *ngFor="let r of book.reviews">
+          <div class="review-top">
+            <span class="review-user">{{ r.user }}</span>
+            <span class="review-stars">
+              <ng-container *ngFor="let s of starsArray(r.stars)">&#9733;</ng-container>
+              <ng-container *ngFor="let s of emptyStars(r.stars)">&#9734;</ng-container>
+            </span>
+          </div>
+          <p class="review-comment">{{ r.comment }}</p>
         </div>
-        <p class="review-text">{{ r.comment }}</p>
       </div>
 
       <div class="review-form">
-        <div style="font-weight:600; margin-bottom:.75rem; color:#0f172a">Laisser un avis</div>
+        <h3 class="form-title-sm">Laisser un avis</h3>
         <input type="text" [(ngModel)]="newReview.user" placeholder="Votre nom" />
-        <textarea [(ngModel)]="newReview.comment" placeholder="Votre commentaire…"></textarea>
+        <textarea [(ngModel)]="newReview.comment" placeholder="Votre commentaire..." rows="3"></textarea>
         <div class="star-picker">
           <span *ngFor="let n of [1,2,3,4,5]" class="star-pick"
-            [style.opacity]="n <= newReview.stars ? 1 : 0.3"
-            (click)="setStars(n)">★</span>
+                [class.active]="n <= newReview.stars"
+                (click)="setStars(n)">&#9733;</span>
         </div>
-        <button class="submit-btn" (click)="submit()">Publier l'avis</button>
+        <button class="btn-primary" (click)="submitReview()">Publier l'avis</button>
       </div>
-
     </div>
+
   </div>
 </div>

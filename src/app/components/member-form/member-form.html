@@ -1,0 +1,91 @@
+<div class="form-page">
+  <div class="form-header">
+    <div class="form-header-inner">
+      <button class="back-btn" (click)="cancel()">← Retour aux membres</button>
+      <h1 class="form-title">
+        {{ isEditMode ? 'Modifier le membre' : 'Nouveau membre' }}
+      </h1>
+      <p class="form-subtitle">
+        {{ isEditMode ? 'Mettez a jour les informations du membre.' : 'Remplissez le formulaire pour inscrire un nouveau membre.' }}
+      </p>
+    </div>
+  </div>
+
+  <div class="form-container">
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+
+      <div class="form-section">
+        <h2 class="section-label">Identite</h2>
+        <div class="form-grid">
+
+          <div class="field">
+            <label for="firstName">Prenom <span class="required">*</span></label>
+            <input id="firstName" type="text" formControlName="firstName"
+                   placeholder="Prenom du membre"
+                   [class.error]="isInvalid('firstName')" />
+            <span class="error-msg" *ngIf="isInvalid('firstName')">
+              Le prenom est obligatoire (minimum 2 caracteres).
+            </span>
+          </div>
+
+          <div class="field">
+            <label for="lastName">Nom <span class="required">*</span></label>
+            <input id="lastName" type="text" formControlName="lastName"
+                   placeholder="Nom de famille"
+                   [class.error]="isInvalid('lastName')" />
+            <span class="error-msg" *ngIf="isInvalid('lastName')">
+              Le nom est obligatoire (minimum 2 caracteres).
+            </span>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h2 class="section-label">Coordonnees</h2>
+        <div class="form-grid">
+
+          <div class="field">
+            <label for="email">Adresse email <span class="required">*</span></label>
+            <input id="email" type="email" formControlName="email"
+                   placeholder="exemple@email.com"
+                   [class.error]="isInvalid('email')" />
+            <span class="error-msg" *ngIf="isInvalid('email')">
+              Adresse email invalide.
+            </span>
+          </div>
+
+          <div class="field">
+            <label for="phone">Telephone <span class="required">*</span></label>
+            <input id="phone" type="tel" formControlName="phone"
+                   placeholder="0612345678"
+                   [class.error]="isInvalid('phone')" />
+            <span class="error-msg" *ngIf="isInvalid('phone')">
+              Numero invalide (10 chiffres requis).
+            </span>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h2 class="section-label">Statut</h2>
+        <div class="field">
+          <label class="checkbox-label">
+            <input type="checkbox" formControlName="active" />
+            <span>Membre actif</span>
+          </label>
+          <span class="hint">Un membre inactif ne peut pas emprunter de livres.</span>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-secondary" (click)="cancel()">Annuler</button>
+        <button type="submit" class="btn-primary">
+          {{ isEditMode ? 'Enregistrer les modifications' : 'Inscrire le membre' }}
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>

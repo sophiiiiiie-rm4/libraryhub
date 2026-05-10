@@ -1,12 +1,9 @@
 <header>
-  <div class="logo">Bibliothèque<span>Hub</span></div>
+  <div class="logo">Bibliotheque<span>Hub</span></div>
   <nav>
-    <button [class.active]="view === 'home'" (click)="viewChange.emit('home')">
-      📚 Accueil
-    </button>
-    <button [class.active]="view === 'favorites'" (click)="viewChange.emit('favorites')">
-      ❤️ Favoris
-      <span class="badge" *ngIf="favCount > 0">{{ favCount }}</span>
-    </button>
+    <a routerLink="/books" routerLinkActive="active">Catalogue</a>
+    <a routerLink="/members" routerLinkActive="active">Membres</a>
+    <a routerLink="/loans" routerLinkActive="active">Emprunts</a>
+    <a routerLink="/dashboard" routerLinkActive="active">Tableau de bord</a>
   </nav>
 </header>

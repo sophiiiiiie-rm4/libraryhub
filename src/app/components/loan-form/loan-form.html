@@ -1,0 +1,61 @@
+<div class="form-page">
+  <div class="form-header">
+    <div class="form-header-inner">
+      <button class="back-btn" (click)="cancel()">← Retour aux emprunts</button>
+      <h1 class="form-title">Nouvel emprunt</h1>
+      <p class="form-subtitle">Associez un membre a un livre disponible pour enregistrer un emprunt.</p>
+    </div>
+  </div>
+
+  <div class="form-container">
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+
+      <div class="form-section">
+        <h2 class="section-label">Selection du livre</h2>
+        <div class="field">
+          <label for="bookId">Livre disponible <span class="required">*</span></label>
+          <select id="bookId" formControlName="bookId" [class.error]="isInvalid('bookId')">
+            <option [ngValue]="null">-- Choisir un livre --</option>
+            <option *ngFor="let b of availableBooks" [value]="b.id">
+              {{ b.title }} — {{ b.author }} ({{ b.availableCopies }} dispo.)
+            </option>
+          </select>
+          <span class="error-msg" *ngIf="isInvalid('bookId')">
+            Veuillez selectionner un livre.
+          </span>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h2 class="section-label">Selection du membre</h2>
+        <div class="field">
+          <label for="memberId">Membre actif <span class="required">*</span></label>
+          <select id="memberId" formControlName="memberId" [class.error]="isInvalid('memberId')">
+            <option [ngValue]="null">-- Choisir un membre --</option>
+            <option *ngFor="let m of activeMembers" [value]="m.id">
+              {{ m.firstName }} {{ m.lastName }} — {{ m.memberCard }}
+            </option>
+          </select>
+          <span class="error-msg" *ngIf="isInvalid('memberId')">
+            Veuillez selectionner un membre.
+          </span>
+        </div>
+      </div>
+
+      <div class="info-box">
+        <span class="info-icon">i</span>
+        <p>La date de retour prevue sera automatiquement fixee a <strong>14 jours</strong> a partir d'aujourd'hui.</p>
+      </div>
+
+      <div class="error-banner" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-secondary" (click)="cancel()">Annuler</button>
+        <button type="submit" class="btn-primary">Enregistrer l'emprunt</button>
+      </div>
+
+    </form>
+  </div>
+</div>
