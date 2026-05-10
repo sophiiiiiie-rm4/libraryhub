@@ -1,0 +1,178 @@
+<div class="page-header">
+  <div class="page-header-inner">
+    <div class="header-text">
+      <p class="header-eyebrow">Bibliothèque · Gestion</p>
+      <h1 class="page-title">Emprunts</h1>
+      <p class="page-subtitle">Suivi en temps réel des prêts, retards et historique.</p>
+    </div>
+    <a routerLink="/loans/new" class="btn-new">+ Nouvel emprunt</a>
+  </div>
+</div>
+
+<div class="page-container">
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-card stat-total">
+      <span class="stat-label">Total emprunts</span>
+      <span class="stat-val">{{ stats.total }}</span>
+      <span class="stat-sub">depuis l'ouverture</span>
+    </div>
+    <div class="stat-card stat-active">
+      <span class="stat-label">En cours</span>
+      <span class="stat-val">{{ stats.active }}</span>
+      <span class="stat-sub">actifs aujourd'hui</span>
+    </div>
+    <div class="stat-card stat-overdue">
+      <span class="stat-label">En retard</span>
+      <span class="stat-val">{{ stats.overdue }}</span>
+      <span class="stat-sub">dépassement de délai</span>
+    </div>
+    <div class="stat-card stat-returned">
+      <span class="stat-label">Retournés</span>
+      <span class="stat-val">{{ stats.returned }}</span>
+      <span class="stat-sub">livres restitués</span>
+    </div>
+  </div>
+
+  <!-- Overdue Alert -->
+  <div class="alert-banner" *ngIf="stats.overdue > 0">
+    <span class="alert-dot"></span>
+    <span>
+      <strong>{{ stats.overdue }} emprunt(s) en retard</strong> —
+      Ces membres doivent restituer leurs livres dès que possible.
+    </span>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters-bar">
+    <div class="filter-group">
+      <span class="filter-label">Statut</span>
+      <div class="status-tabs">
+        <button class="tab-btn"
+                [class.active]="statusFilter === 'all'"
+                (click)="statusFilter = 'all'">
+          Tous <span class="tab-count">{{ stats.total }}</span>
+        </button>
+        <button class="tab-btn tab-active-s"
+                [class.active]="statusFilter === 'active'"
+                (click)="statusFilter = 'active'">
+          En cours <span class="tab-count">{{ stats.active }}</span>
+        </button>
+        <button class="tab-btn tab-overdue"
+                [class.active]="statusFilter === 'overdue'"
+                (click)="statusFilter = 'overdue'">
+          En retard <span class="tab-count">{{ stats.overdue }}</span>
+        </button>
+        <button class="tab-btn tab-returned"
+                [class.active]="statusFilter === 'returned'"
+                (click)="statusFilter = 'returned'">
+          Retournés <span class="tab-count">{{ stats.returned }}</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="filter-group filter-dates">
+      <span class="filter-label">Période d'emprunt</span>
+      <div class="date-range">
+        <input type="date" [(ngModel)]="dateFrom" class="date-input" />
+        <span class="date-sep">—</span>
+        <input type="date" [(ngModel)]="dateTo" class="date-input" />
+        <button class="reset-btn"
+                *ngIf="dateFrom || dateTo || statusFilter !== 'all'"
+                (click)="resetFilters()">
+          Réinitialiser
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="table-wrap">
+    <table class="loans-table">
+      <thead>
+      <tr>
+        <th>Livre</th>
+        <th>Membre</th>
+        <th>Emprunté le</th>
+        <th>Retour prévu</th>
+        <th>Statut</th>
+        <th>Action</th>
+      </tr>
+      </thead>
+      <tbody>
+
+      <tr *ngIf="loans.length === 0">
+        <td colspan="6" class="empty-row">
+          <div class="empty-state">
+            <div class="empty-line"></div>
+            <div class="empty-line" style="width:24px"></div>
+            <p>Aucun emprunt trouvé pour ces filtres.</p>
+          </div>
+        </td>
+      </tr>
+
+      <tr *ngFor="let loan of loans"
+          [class.row-overdue]="loan.status === 'overdue'"
+          [class.row-returned]="loan.status === 'returned'">
+
+        <td>
+          <div class="book-cell">
+            <span class="book-avatar">{{ getBookTitle(loan.bookId).charAt(0) }}</span>
+            <span class="book-title-cell">{{ getBookTitle(loan.bookId) }}</span>
+          </div>
+        </td>
+
+        <td>
+          <div class="member-cell">
+            <span class="member-name">{{ getMemberName(loan.memberId) }}</span>
+            <span class="member-card">{{ getMemberCard(loan.memberId) }}</span>
+          </div>
+        </td>
+
+        <td class="date-cell">{{ loan.borrowedAt | date:'dd/MM/yyyy' }}</td>
+
+        <td class="date-cell">
+            <span [class.overdue-date]="loan.status === 'overdue'">
+              {{ loan.dueDate | date:'dd/MM/yyyy' }}
+            </span>
+          <span class="days-late" *ngIf="loan.status === 'overdue'">
+              +{{ daysOverdue(loan) }}j
+            </span>
+        </td>
+
+        <td>
+            <span class="status-badge"
+                  [ngClass]="{
+                    'badge-active':   loan.status === 'active',
+                    'badge-overdue':  loan.status === 'overdue',
+                    'badge-returned': loan.status === 'returned'
+                  }">
+              {{ loan.status === 'active' ? 'En cours' :
+              loan.status === 'overdue' ? 'En retard' : 'Retourné' }}
+            </span>
+        </td>
+
+        <td>
+          <div class="action-cell">
+            <button *ngIf="loan.status !== 'returned'"
+                    class="btn-return"
+                    (click)="returnLoan(loan.id)">
+              Retourner
+            </button>
+            <span *ngIf="loan.status === 'returned'" class="return-date">
+                {{ loan.returnedAt | date:'dd/MM/yyyy' }}
+              </span>
+          </div>
+        </td>
+
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="table-footer">
+    {{ loans.length }} emprunt(s) affiché(s)
+  </div>
+
+</div>
