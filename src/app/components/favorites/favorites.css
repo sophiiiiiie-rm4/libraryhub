@@ -1,0 +1,55 @@
+.favs-header {
+  background: linear-gradient(135deg, #0f0f1a 0%, #1e1b4b 50%, #0e7490 100%);
+  padding: 3.5rem 2rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.favs-header::before {
+  content: '';
+  position: absolute;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(99,102,241,0.2) 0%, transparent 65%);
+  top: -200px; left: 50%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+}
+
+.favs-header h2 {
+  color: #fff;
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  position: relative;
+}
+
+.favs-header p {
+  color: rgba(255,255,255,0.55);
+  margin-top: 0.5rem;
+  position: relative;
+}
+
+main {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+}
+
+.books-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.75rem;
+}
+
+.empty {
+  text-align: center;
+  padding: 5rem 2rem;
+  color: var(--gray);
+}
+
+.empty h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: var(--ink);
+}

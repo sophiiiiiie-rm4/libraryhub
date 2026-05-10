@@ -1,0 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap');
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --primary: #6366f1;
+  --primary-dark: #4f46e5;
+  --primary-light: #eef2ff;
+  --accent: #06b6d4;
+  --ink: #0f0f1a;
+  --gray: #6b7280;
+  --gray-light: #f9fafb;
+  --border: #e5e7eb;
+  --white: #ffffff;
+  --radius: 20px;
+  --shadow: 0 8px 32px rgba(99,102,241,0.12);
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: #f5f5ff;
+  color: var(--ink);
+  min-height: 100vh;
+}
+
+h1, h2, h3 { font-family: 'Syne', sans-serif; }

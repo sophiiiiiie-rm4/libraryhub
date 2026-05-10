@@ -1,0 +1,12 @@
+<header>
+  <div class="logo">Bibliothèque<span>Hub</span></div>
+  <nav>
+    <button [class.active]="view === 'home'" (click)="viewChange.emit('home')">
+      📚 Accueil
+    </button>
+    <button [class.active]="view === 'favorites'" (click)="viewChange.emit('favorites')">
+      ❤️ Favoris
+      <span class="badge" *ngIf="favCount > 0">{{ favCount }}</span>
+    </button>
+  </nav>
+</header>

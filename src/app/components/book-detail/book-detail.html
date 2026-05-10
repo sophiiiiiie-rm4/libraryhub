@@ -1,0 +1,61 @@
+<div class="modal-overlay" (click)="closed.emit()">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <button class="modal-close" (click)="closed.emit()">✕</button>
+    <div class="modal-cover">{{ book.emoji }}</div>
+    <div class="modal-body">
+
+      <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+        <div>
+          <h2 class="modal-title">{{ book.title }}</h2>
+          <p class="modal-author">par {{ book.author }} · {{ book.country }} · {{ book.year }}</p>
+        </div>
+        <button class="fav-btn" style="font-size:1.6rem" (click)="toggleFav.emit(book.id)">
+          {{ isFav ? '❤️' : '🤍' }}
+        </button>
+      </div>
+
+      <span class="cat-tag">{{ book.category }}</span>
+      <p class="modal-desc">{{ book.description }}</p>
+
+      <div class="modal-stats">
+        <div class="stat-box">
+          <div class="stat-val">{{ book.pages }}</div>
+          <div class="stat-lbl">Pages</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-val" style="color:#2563eb">★ {{ book.rating }}</div>
+          <div class="stat-lbl">Note</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-val">{{ book.reviews.length }}</div>
+          <div class="stat-lbl">Avis</div>
+        </div>
+      </div>
+
+      <h3 class="reviews-title">💬 Commentaires</h3>
+      <p *ngIf="book.reviews.length === 0" style="color:#64748b; font-size:.9rem">
+        Soyez le premier à laisser un avis !
+      </p>
+      <div class="review-item" *ngFor="let r of book.reviews">
+        <div class="review-header">
+          <span class="review-user">{{ r.user }}</span>
+          <span class="stars">{{ starsArray(r.stars).join('') }}{{ emptyStars(r.stars).join('') }}</span>
+        </div>
+        <p class="review-text">{{ r.comment }}</p>
+      </div>
+
+      <div class="review-form">
+        <div style="font-weight:600; margin-bottom:.75rem; color:#0f172a">Laisser un avis</div>
+        <input type="text" [(ngModel)]="newReview.user" placeholder="Votre nom" />
+        <textarea [(ngModel)]="newReview.comment" placeholder="Votre commentaire…"></textarea>
+        <div class="star-picker">
+          <span *ngFor="let n of [1,2,3,4,5]" class="star-pick"
+            [style.opacity]="n <= newReview.stars ? 1 : 0.3"
+            (click)="setStars(n)">★</span>
+        </div>
+        <button class="submit-btn" (click)="submit()">Publier l'avis</button>
+      </div>
+
+    </div>
+  </div>
+</div>

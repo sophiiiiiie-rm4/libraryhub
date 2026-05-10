@@ -1,0 +1,14 @@
+<div class="book-card" (click)="selected.emit(book)">
+  <div class="book-cover">{{ book.emoji }}</div>
+  <div class="book-info">
+    <div class="book-title">{{ book.title }}</div>
+    <div class="book-author">{{ book.author }}</div>
+    <span class="cat-tag">{{ book.category }}</span>
+    <div class="book-meta">
+      <span class="stars">★ {{ book.rating }}</span>
+      <button class="fav-btn" (click)="$event.stopPropagation(); toggleFav.emit(book.id)">
+        {{ isFav ? '❤️' : '🤍' }}
+      </button>
+    </div>
+  </div>
+</div>

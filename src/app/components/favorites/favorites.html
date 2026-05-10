@@ -1,0 +1,20 @@
+<div class="favs-header">
+  <h2>❤️ Mes Favoris</h2>
+  <p>{{ favBooks.length }} livre(s) sauvegardé(s)</p>
+</div>
+
+<main>
+  <div *ngIf="favBooks.length === 0" class="empty">
+    <h3>Aucun favori pour l'instant</h3>
+    <p>Cliquez sur 🤍 pour ajouter un livre.</p>
+  </div>
+  <div class="books-grid">
+    <app-book-card
+      *ngFor="let b of favBooks"
+      [book]="b"
+      [isFav]="true"
+      (selected)="bookSelected.emit($event)"
+      (toggleFav)="favToggled.emit($event)">
+    </app-book-card>
+  </div>
+</main>
